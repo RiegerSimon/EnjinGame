@@ -1,0 +1,27 @@
+LOGIN|query login{{result:EnjinOauth(email:"{0}",password:"{1}"){{id,name,email,access_tokens,roles{{id,app_id,name,permissions{{id,name}}}},identities{{id,app_id,ethereum_address,linking_code,eth_balance,enj_balance,enj_allowance,created_at,updated_at}},created_at,updated_at,apps{{id,name,description,image}}}}}}
+GET_PLATFORM_INFO|query GetPlatform{result:EnjinPlatform{id,name,network,notifications}}
+CREATE_USER|mutation createUser{{result:CreateEnjinUser(name:"{0}",email:"{1}",password:"{2}",role:"{3}"){{id,name,email,roles{{id,name,permissions{{id,name}}}},identities{{id,ethereum_address,linking_code,updated_at,created_at,fields{{key,value,searchable,displayable,unique}}}},access_tokens,created_at,updated_at}}}}
+UPDATE_USER|mutation updateUser{{user:UpdateEnjinUser(id:{0},name:"{1}",email:"{2}"{3}){{id,name,email,roles{{id,name,permissions{{id,name}}}},identities{{id}},access_tokens,created_at,updated_at}}}}
+INVITE_USER|mutation inviteUser{{UpdateEnjinApp(invite:"{0}"){{id,identities{{user{{id}}}}}}}}
+INVITE_USER_WITH_NAME|mutation inviteUser{{UpdateEnjinApp(invite:{{email:"{0}",name:"{1}"}}){{id,identities{{user{{id}}}}}}}}
+UPDATE_BALANCES|query getEthBalance{{balances:EnjinIdentities(id:{0},ethereum_address:"{1}"){{enj_balance, eth_balance}}}}
+CREATE_ITEM|mutation createItem{{result:CreateEnjinRequest(identity_id:{0},type:CREATE,create_token_data:{{name:"{1}",totalSupply:{2},initialReserve:{3},supplyModel:{4},meltValue:"{5}",meltFeeRatio:{6},transferable:{7},transferFeeSettings:{{type:{8},token_id:"{9}",value:"{10}"}},nonFungible:{11}}}){{id,transaction_id,state,encoded_data}}}}
+CREATE_IDENTITY_BY_USER_ID|mutation createIdentity{{result:CreateEnjinIdentity(user_id:{0},ethereum_address:"{1}",fields:{2}){{id,app_id,user{{id}},ethereum_address,linking_code,updated_at,created_at,fields{{key,value,searchable,displayable,unique}}}}}}
+CREATE_IDENTITY_BY_EMAIL|mutation createIdentity{{result:CreateEnjinIdentity(email:"{0}",ethereum_address:"{1}",fields:{2}){{id,app_id,user{{id}},ethereum_address,linking_code,updated_at,created_at,fields{{key,value,searchable,displayable,unique}}}}}}
+GET_ITEM_BY_ID|query getItem{{result:EnjinTokens(token_id:"{0}"){{token_id,app_id,name,creator,meltValue,meltFeeRatio,meltFeeMaxRatio,supplyModel,totalSupply,circulatingSupply,reserve,transferable,transferFeeSettings{{type,token_id,value}},nonFungible,firstBlock,blockHeight,markedForDelete,isCreator,balance,itemURI,icon}}}}
+GET_ITEM_BALANCES_FOR_ADDRESS|query getItemBalances{{result:EnjinIdentities(ethereum_address:"{0}"){{tokens(include_creator_tokens:true){{token_id,app_id,name,creator,meltValue,meltFeeRatio,meltFeeMaxRatio,supplyModel,totalSupply,circulatingSupply,reserve,transferable,transferFeeSettings{{type,token_id,value}},nonFungible,firstBlock,blockHeight,markedForDelete,isCreator,balance,index,availableToMint,itemURI,icon}}}}}}
+GET_ITEM_BALANCES_FOR_IDENTITY_ID|query getItemBalances{{result:EnjinIdentities(id:{0}){{tokens(include_creator_tokens:true){{token_id,app_id,name,creator,meltValue,meltFeeRatio,meltFeeMaxRatio,supplyModel,totalSupply,circulatingSupply,reserve,transferable,transferFeeSettings{{type,token_id,value}},nonFungible,firstBlock,blockHeight,markedForDelete,isCreator,balance,index,availableToMint,itemURI,icon}}}}}}
+CREATE_APP|mutation createApp{{App:CreateEnjinApp(name:"{0}",description:"{1}",image:"{2}"){{id,name,description,image}}}}
+UPDATE_APP|mutation updateApp{{App:UpdateEnjinApp(name:"{0}",description:"{1}",image:"{2}"){{id,name,description,image}}}}
+CREATE_ROLE|mutation createRole{{result:CreateEnjinRole(name:"{0}",permissions:{1}){{id,name,permissions{{name}}}}}}
+DELETE_ROLE|mutation deleteRole{{result:DeleteEnjinRole(name:"{0}"){{id}}}}
+UPDATE_ROLE_NAME|mutation updateRole{{result:UpdateEnjinRole(name:"{0}",new_name:"{1}",permissions:{2}){{id,name,permissions{{name}}}}}}
+UPDATE_ROLE|mutation updateRole{{result:UpdateEnjinRole(name:"{0}",permissions:{1}){{id,name,permissions{{name}}}}}}
+SEND_ITEMS|mutation advancedSend{{request:CreateEnjinRequest(identity_id:{0},type:ADVANCED_SEND,advanced_send_token_data:{{transfers:[{1}]}}){{id,encoded_data}}}}
+SET_MAX_ALLOWANCE|mutation ApproveMAXENJ{{CreateEnjinRequest(identity_id:{0},type:APPROVE,approve_enj_data:{{value:-1}}){{id,encoded_data}}}}
+MINT_ITEM|mutation mintItem{{request:CreateEnjinRequest(identity_id:{0},type:MINT,mint_token_data:{{token_id:"{1}",recipient_address_array:[{2}],value_array:[{3}]}}){{id,encoded_data,state}}}}
+REFRESH_IDENTITY|query refreshIdentity{{result:EnjinIdentities(id:{0}){{id,app_id,ethereum_address,linking_code,eth_balance,enj_balance,enj_allowance,created_at,updated_at}}}}
+CREATE_TRADE|mutation createTradeRequest{{request:CreateEnjinRequest(identity_id:{0},type:CREATE_TRADE,create_trade_data:{{asking_tokens:[{1}],offering_tokens:[{2}],second_party_address:"{3}"}}){{id,encoded_data,state}}}}
+COMPLETE_TRADE|mutation completeTradeRequest{{request:CreateEnjinRequest(identity_id:{0},type:COMPLETE_TRADE,complete_trade_data:{{trade_id:"{1}"}}){{id,encoded_data,state}}}}
+MELT_FUNGIBLE_ITEM|mutation meltFungibleItem{{request:CreateEnjinRequest(identity_id:{0},type:MELT,melt_token_data:{{token_id:"{1}",value:{2}}}){{id,encoded_data,state}}}}
+MELT_NONFUNGIBLE_ITEM|mutation meltNonfungibleItem{{request:CreateEnjinRequest(identity_id:{0},type:MELT,melt_token_data:{{token_id:"{1}",token_index:"{2}"}}){{id,encoded_data,state}}}}
